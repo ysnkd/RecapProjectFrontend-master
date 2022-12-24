@@ -1,0 +1,40 @@
+<div
+  *ngIf="dataLoaded == false"
+  class="spinner-border text-primary"
+  role="status"
+>
+  <span class="visually-hidden">Loading...</span>
+</div>
+
+<ul *ngIf="dataLoaded == true" class="list-group">
+  <li
+    (click)="nullCurrentColor()"
+    [class]="getCurrentAllColorClass()"
+    routerLink="/cars"
+    class="p-3 mb-2 bg-dark bg-gradient text-white"
+    aria-current="true"
+  >
+    Tüm Renkler
+  </li>
+
+  <div class="mb-3">
+    <label for="filterColor" class="form-label"><strong>Renk ismi giriniz:</strong></label>
+    <input type="text"  [(ngModel)]="filterColor" class="form-control" id="filterColor" placeholder="Renk ara">
+  </div>
+
+   <li *ngFor="let color of colors | filterColor:filterColor"
+    (click)="setCurrentColor(color)"
+    routerLink="/cars/color/{{ color.colorId }}"
+    [class]="getCurrentColorClass(color)"
+  >
+    {{ color.colorName }}
+  </li> 
+
+
+  <!-- <select  class="form-select"  aria-label="Default select example">
+    <option selected (click)="nullCurrentColor()"
+    [class]="getCurrentAllColorClass()"
+    routerLink="/cars"  class="p-3 mb-2 bg-success bg-gradient text-white">Colors</option>
+    <option *ngFor="let color of colors" routerLink="/cars/color/{{ color.colorId }}" [class]="getCurrentColorClass(color)" (click)="setCurrentColor(color)" >{{ color.colorName }}</option>
+  </select> -->
+</ul>

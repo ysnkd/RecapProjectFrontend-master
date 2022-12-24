@@ -1,0 +1,115 @@
+<div class="container-fluid" routerLink="/payment">
+    <div class="row justify-content-center">
+        <app-card-saved (selectedCard)="setSelectedCard($event)"></app-card-saved><br>
+        <div class="col-12 col-lg-11">
+            <div class="card card0 rounded-0">
+                <div class="row">
+                    <div *ngIf="carDetail" class="col-md-6 d-md-block d-none p-0 box">
+                        <div class="card rounded-0 border-0 card1" id="bill">
+                            <h3 id="heading1">Payment Summary</h3><br>
+                            <div class="row">
+                                <div class="col-lg-5 col-4 mt-3 line">
+                                    <h2 id="writestyle" class="bill-head">Marka</h2>
+                                </div>
+                                <!-- <div class="col-lg-4 col-5 mt-4"> -->
+                                <div class="col-lg-7 col-8 mt-3">
+                                    <h2 id="writestyle2" class="bill-head px-xl-2 px-lg-5">{{ carDetail.brandName }}</h2>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-lg-5 col-4 mt-3 line">
+                                    <h2 id="writestyle" class="bill-head">Renk</h2>
+                                </div>
+                                <div class="col-lg-7 col-8 mt-3">
+                                    <h2 id="writestyle2" class="bill-head px-xl-2 px-lg-4">{{ carDetail.colorName }}</h2>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-lg-5 col-4 mt-3 line">
+                                    <h2 id="writestyle" class="bill-head">Modeli</h2>
+                                </div>
+                                <div class="col-lg-7 col-8 mt-3">
+                                    <h2 id="writestyle2" class="bill-head px-xl-2">{{ carDetail.modelYear }}</h2>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-lg-5 col-4 mt-3 line">
+                                    <h2  id="writestyle" class="bill-head">Açıklama</h2> 
+                                </div>
+                                <div class="col-lg-7 col-8 mt-3">
+                                    <h2 id="writestyle2" class="bill-head px-xl-2">{{ carDetail.description }}</h2>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-lg-5 col-4 mt-3 line">
+                                    <h2 id="writestyle" class="bill-head">Kiralama Tarihi</h2> 
+                                </div>
+                                <div class="col-lg-7 col-8 mt-3">
+                                    <h2 id="writestyle2" class="bill-head px-xl-2">{{getRentingCar().rentDate}}</h2>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-lg-5 col-4 mt-3 line">
+                                    <h2 id="writestyle" class="bill-head">Teslim Tarihi</h2> 
+                                </div>
+                                <div class="col-lg-7 col-8 mt-3">
+                                    <h2 id="writestyle2" class="bill-head px-xl-2">{{getRentingCar().returnDate}}</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div id="blabla" class="col-md-12 red-bg">
+                                    <p class="bill-date" id="total-label">Toplam fiyat</p>
+                                    <h2 class="bill-head" id="total">
+                                        {{totalPrice | vatAdded: 10 | currency: "₺"}}
+                                    </h2> 
+                                    <!-- <small class="bill-date" id="total-label2">Price includes all taxes</small> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 p-0 box">
+                        <div class="card rounded-0 border-0 card2" id="paypage">
+                            <div class="form-card">
+                                <h2 id="heading2"><b>Payment</b></h2><br>
+                                <div class="radio-group">
+                                    <div class='radio' data-value="credit"><img src="https://i.imgur.com/28akQFX.jpg" width="190px" height="60px"></div>
+                                    <div class='radio' data-value="paypal"><img src="https://i.imgur.com/5QFsx7K.jpg" width="190px" height="60px"></div> <br>
+                                </div> <label class="pay">Kart Üzerindeki İsim</label>
+                                <input [(ngModel)]="cardNameSurname" type="text" name="holdername" placeholder="İsim Soyisim">
+                                <div class="row">
+                                    <div class="col-8 col-md-12"> <label class="pay">Kart Numarası</label> 
+                                        <input [(ngModel)]="cardNumber" type="text" name="cardno" id="cr_no" placeholder="0000000000000000" minlength="16" maxlength="16"> </div>
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"> <label class="pay">Son Kullanma Tarihi</label> 
+                                    <div> 
+                                        <input [(ngModel)]="cardExpiryDate" type="text" name="exp" id="exp" placeholder="AA/YY" minlength="5" maxlength="5"> </div></div>&nbsp;&nbsp;
+                                    <div class="col-md-1"> <label class="pay">&nbsp;Güvenlik Kodu</label>
+                                        <div> 
+                                        <input id="cvv"  [(ngModel)]="cardCvv" type="password" name="cvcpwd" placeholder="&#9679;&#9679;&#9679;" class="placeicon" minlength="3" maxlength="3"> </div></div>
+                                        
+                                    </div><br>
+
+                                    
+                                      
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="save" [(ngModel)]="save">
+                                        <label class="form-check-label" for="save">
+                                           Kart bilgilerimin kayıt edilmesini istiyorum.
+                                        </label>
+                                     </div>
+                                      <br>
+                                
+                                <div class="row">
+                                        <button (click)="rentACar()" class="btn btn-success" style="background-color: crimson;height:40px;"><b>ÖDEMEYİ TAMAMLA</b></button>  
+                                       
+                                </div>                                
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
